@@ -5,6 +5,7 @@
  */
 package com.vertexforker.entity;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -16,13 +17,13 @@ import java.util.Random;
 public class CardsDeck extends Card{
         
     static final int NO_CARDS =  52; // Number of cards 
-    private Card[] deck; //Array of playing cards
+    protected ArrayList<Card> deck; //Array of playing cards
     
     public CardsDeck(){
-        deck = new Card[NO_CARDS];
+        deck = new ArrayList<Card>();
     }
     
-    public Card[] getDeck(){ //Get the current card deck
+    public ArrayList<Card> getDeck(){ //Get the current card deck
         return this.deck;
     }
     
@@ -33,12 +34,13 @@ public class CardsDeck extends Card{
         for(SUIT suit : SUIT.values()){
             
             for(VALUE value : VALUE.values()){
-                deck[i] = new Card(suit,value);
+                deck.add(i,new Card(suit,value));
                 i++;
             }
             
         } 
         shuffleCards();
+        
     }
     
     public void shuffleCards(){
@@ -46,19 +48,26 @@ public class CardsDeck extends Card{
         Random rand = new Random();
         Card temp;
         
-        for (int i = 0;i<1000;i++){
+       for (int i = 0;i<100;i++){
             
             for(int j=0;j<NO_CARDS;j++){
                 
-                int k = rand.nextInt(13);
-                temp = deck[j];
-                deck[j] = deck[k];
-                deck[k] = deck[j];
+                int k = rand.nextInt(52);
+                temp = deck.get(j);
+                deck.set(j, deck.get(k));
+                deck.set(k, temp);
                 
             }
-            
+          
+      } 
+    }
+    
+    public void showDeck(){
+        System.err.println("-------- Deck -------");
+        for(int i = 0;i<deck.size();i++){
+            Card card = deck.get(i);
+            System.out.println(card.getCardValue() + " OF " +card.getCardSuit()); 
         }
-        
     }
     
 }
