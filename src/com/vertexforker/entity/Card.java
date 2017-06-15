@@ -5,6 +5,8 @@
  */
 package com.vertexforker.entity;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Imanshu
@@ -27,7 +29,11 @@ public class Card {
     private SUIT cardSuit;
     private VALUE cardValue;
     
-    public Card(){}
+    
+    public Card(){
+    
+    
+    }
     
     public Card(SUIT suit, VALUE value){
         cardSuit = suit;
@@ -41,4 +47,6 @@ public class Card {
     public VALUE getCardValue(){
         return this.cardValue;
     }
+   
+    
 }
