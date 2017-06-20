@@ -12,6 +12,48 @@ package com.vertexforker.entity;
 public class Player {
 
     /**
+     * @return the bet
+     */
+    public int getBet() {
+        return bet;
+    }
+
+    /**
+     * @param bet the bet to set
+     */
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
+
+    /**
+     * @return the score
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * @param score the score to set
+     */
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * @return the playerHand
      */
     public Card[] getPlayerHand() {
@@ -39,12 +81,18 @@ public class Player {
         this.sortedPlayerHand = sortedPlayerHand;
     }
 
-
+    
+    private int id;
     private String playerName;
+    private int bet;
+    private int score;
     private Card[] playerHand;
     private Card[] sortedPlayerHand;
     
     public Player(){
+        playerName = "";
+        bet = 0;
+        score = 0;
         playerHand = new Card[2];
         sortedPlayerHand = new Card[2]; 
     }

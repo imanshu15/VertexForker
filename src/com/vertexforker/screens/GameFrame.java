@@ -7,8 +7,7 @@ package com.vertexforker.screens;
 
 
 
-import java.awt.Toolkit;
-import javax.swing.Icon;
+import com.vertexforker.entity.Player;
 import javax.swing.ImageIcon;
 
 /**
@@ -22,7 +21,7 @@ public class GameFrame extends javax.swing.JFrame {
      */
     public GameFrame() {
         initComponents();
-        
+     
        
     }
 
@@ -45,7 +44,6 @@ public class GameFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 600));
-        setPreferredSize(new java.awt.Dimension(900, 600));
         getContentPane().setLayout(null);
 
         jPanel1.setOpaque(false);
@@ -112,41 +110,7 @@ public class GameFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 GameFrame gm = new GameFrame();
-                Card card1 = new Card("back.png",61,85,0);
-                Card card2 = new Card("back.png",61,85,0);
-                Card card3 = new Card("back.png",61,85,0);
-                Card card4 = new Card("back.png",61,85,0);
-                Card card5 = new Card("back.png",61,85,0);
-             
-                jPanel1.add(card1);
-                jPanel1.add(card2);
-                jPanel1.add(card3);
-                jPanel1.add(card4);
-                jPanel1.add(card5);
-                
-                Player user=new Player();
-                Player user1=new Player();
-                Player user2=new Player();
-                Player user3=new Player();
-                Player user4=new Player();
-                
-                user1.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user2.png"));
-                user2.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user3.png"));
-                user3.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user4.png"));
-                user4.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user5.png"));
-                
-                
-                userPanel.add(user);
-                userPanel1.add(user1);
-                userPanel2.add(user2);
-                userPanel3.add(user3);
-                userPanel4.add(user4);
-              
-                
-                
-                gm.validate();
-                gm.repaint();
-                gm.setVisible(true);
+          
                 
                 
                 
@@ -168,4 +132,43 @@ public class GameFrame extends javax.swing.JFrame {
     private static javax.swing.JPanel userPanel3;
     private static javax.swing.JPanel userPanel4;
     // End of variables declaration//GEN-END:variables
+
+    public void setUpGameScreen(Player player) {
+        
+          PlayerPanel user=new PlayerPanel(player);
+        userPanel.add(user);
+        /*
+                CardPanel card1 = new CardPanel("back.png",61,85,0);
+                CardPanel card2 = new CardPanel("back.png",61,85,0);
+                CardPanel card3 = new CardPanel("back.png",61,85,0);
+                CardPanel card4 = new CardPanel("back.png",61,85,0);
+                CardPanel card5 = new CardPanel("back.png",61,85,0);
+             
+                jPanel1.add(card1);
+                jPanel1.add(card2);
+                jPanel1.add(card3);
+                jPanel1.add(card4);
+                jPanel1.add(card5);
+                
+                
+                PlayerPanel user1=new PlayerPanel();
+                PlayerPanel user2=new PlayerPanel();
+                PlayerPanel user3=new PlayerPanel();
+                PlayerPanel user4=new PlayerPanel();
+                
+                user1.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user2.png"));
+                user2.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user3.png"));
+                user3.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user4.png"));
+                user4.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user5.png"));
+                
+                
+                
+                userPanel1.add(user1);
+                userPanel2.add(user2);
+                userPanel3.add(user3);
+                userPanel4.add(user4);
+              
+                */
+             
+    }
 }

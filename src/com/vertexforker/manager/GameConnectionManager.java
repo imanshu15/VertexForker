@@ -17,7 +17,7 @@ import jme3tools.savegame.SaveGame;
  * @author Imanshu
  */
 public class GameConnectionManager {
-    
+    /*
     public void hostGame(){
         
         
@@ -64,5 +64,5 @@ public class GameConnectionManager {
     
     }
     
-    
+    */
 }

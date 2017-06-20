@@ -8,6 +8,7 @@ package com.vertexforker.connection;
 import com.jme3.network.Client;
 import com.jme3.network.ClientStateListener;
 import com.jme3.network.Network;
+import com.vertexforker.entity.Player;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,11 +32,13 @@ public class ClientManager implements ClientStateListener{
         }
     }
     
-    public boolean startClient(){
+    public boolean startClient(Player player){
        boolean value = true; 
        try {
             client.start();   
             System.out.println("Client Connected");
+            clientConnected(client);
+            client.send(new PlayerMessage(player));
             
         }catch(Exception ex) {
             

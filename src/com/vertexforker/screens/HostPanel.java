@@ -5,13 +5,18 @@
  */
 package com.vertexforker.screens;
 
+import com.vertexforker.connection.ServerManager;
+import com.vertexforker.util.Token;
+import java.awt.Color;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
  * @author TP Live
  */
-public class HostPanel extends javax.swing.JPanel {
+public class HostPanel extends javax.swing.JPanel{
 
     /**
      * Creates new form HostPanel
@@ -169,7 +174,56 @@ public class HostPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        
+        boolean valid = true;
+        
+        String playerStr = jTextField1.getText();
+        String noPlayersStr = jLabel3.getText();
+        int noPlayers;
+        
+        if(playerStr.isEmpty()){
+            jLabel2.setText("Player name cant be empty");
+            jLabel2.setForeground(Color.red);
+            valid = false;
+        }
+        try{
+           noPlayers = Integer.parseInt(noPlayersStr);
+           if(noPlayers < 2 || noPlayers >5){
+            jLabel2.setText("noPlayers should be within 2-5");
+            jLabel2.setForeground(Color.red);
+            valid = false;
+           }
+        }catch(Exception ex){
+            jLabel2.setText("noPlayers should be within 2-5");
+            jLabel2.setForeground(Color.red);
+            valid = false;
+        }
+        
+        if(valid){
+            ServerManager svrManager = new ServerManager();
+            Token token = svrManager.startServer();
+
+            if(token.isSuccess()){
+                 com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
+                 player.setPlayerName(playerStr);
+                 JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                 topFrame.setVisible(false);
+                 topFrame.dispose();
+                 GameFrame gm = new GameFrame();
+                 gm.setUpGameScreen(player);
+                 gm.setVisible(true);
+                 jLabel2.setText("Server Started");
+                 jLabel2.setForeground(Color.MAGENTA);
+                 jTextField1.setEnabled(false);
+                 jButton2.setEnabled(false);
+                 jButton3.setEnabled(false);
+                 jButton4.setEnabled(false);
+            }else{
+                jLabel2.setText(token.getError());
+                jLabel2.setForeground(Color.red);
+            }
+        }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -10,6 +10,8 @@ import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
 import com.jme3.network.Server;
+import com.vertexforker.entity.Player;
+import com.vertexforker.manager.ServerDataManager;
 
 /**
  *
@@ -18,9 +20,11 @@ import com.jme3.network.Server;
 public class ServerListener implements MessageListener<HostedConnection>{
 
     private Server server;
+    private ServerDataManager dataManager;
     
-    public ServerListener(Server server){
+    public ServerListener(Server server,ServerDataManager dataManager){
         this.server =server;
+        this.dataManager = dataManager;
     }
     
     @Override
@@ -28,7 +32,14 @@ public class ServerListener implements MessageListener<HostedConnection>{
         
         if(m instanceof TextMessage){
            TextMessage tm = (TextMessage) m;
+            System.out.println(tm.getMessage());
            server.broadcast(Filters.notEqualTo(source),new TextMessage(tm.getMessage()));
+        }else
+        if(m instanceof PlayerMessage){
+            PlayerMessage pm = (PlayerMessage) m;
+            Player player = pm.getPlayer();
+            server.broadcast(new PlayerMessage(player));
+            System.out.println(player.getPlayerName() + " Connected");
         }
         
     }

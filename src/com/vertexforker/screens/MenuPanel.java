@@ -5,6 +5,7 @@
  */
 package com.vertexforker.screens;
 
+import com.vertexforker.manager.SoundManager;
 import javax.swing.JPanel;
 
 /**
@@ -89,7 +90,7 @@ public class MenuPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-   
+        SoundManager.playButtonClickSound();
         HostPanel hp=new HostPanel(contentPanel);   
         contentPanel.setVisible(false);
         contentPanel.remove(this);

@@ -7,6 +7,7 @@ package com.vertexforker.connection;
 
 import com.jme3.network.Network;
 import com.jme3.network.Server;
+import com.vertexforker.manager.ServerDataManager;
 import com.vertexforker.util.Token;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -19,13 +20,15 @@ import java.util.logging.Logger;
 public class ServerManager {
     
     private Server server;
+    private ServerDataManager dataManager;
     
     
     public ServerManager(){
+        initDataManager();
         ConnectionUtil.initSerializers();
          try {
             server = Network.createServer(ConnectionUtil.SERVER_PORT);
-            server.addMessageListener(new ServerListener(server));
+            server.addMessageListener(new ServerListener(server,dataManager));
         } catch (IOException ex) {
             Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Server Initializing Error");
@@ -38,7 +41,7 @@ public class ServerManager {
          try {
             server.start();
             System.out.println("Server Started");
-          
+            
          } catch (Exception ex) {
             Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Server Staring Error");
@@ -47,6 +50,10 @@ public class ServerManager {
         }
          
          return token;
+    }
+
+    private void initDataManager() {
+        dataManager = new ServerDataManager();
     }
     
 }

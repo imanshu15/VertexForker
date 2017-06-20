@@ -94,6 +94,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void disposeScreen(){
+      dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel contentPanel;

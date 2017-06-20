@@ -5,6 +5,11 @@
  */
 package com.vertexforker.screens;
 
+import com.jme3.math.ColorRGBA;
+import com.vertexforker.connection.ClientManager;
+import com.vertexforker.connection.ConnectionUtil;
+import java.awt.Color;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -133,7 +138,37 @@ public class JoinPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+                    
+                     boolean valid = true;
+                    String clientIp = jTextField1.getText();
+                    String playerName = jTextField2.getText();
+                    
+                    if(playerName.isEmpty()){
+                        jLabel2.setText("Enter name");
+                        jLabel2.setForeground(Color.red);
+                        valid = false;
+                    }else{
+                        jLabel2.setText("Player Name");
+                        jLabel2.setForeground(Color.GRAY);
+                    }
+                    if(!ConnectionUtil.validate(clientIp)){
+                         jLabel1.setText("Invalid IP Address");
+                         jLabel1.setForeground(Color.red);
+                    }else{
+                         jLabel1.setText("Server IP Address");
+                         jLabel1.setForeground(Color.GRAY);
+                    }
+                    if(valid){
+                      com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
+                      player.setPlayerName(playerName);
+                      jLabel1.setText("Connecting");
+                      jLabel1.setForeground(Color.GRAY);
+                      jTextField1.setEnabled(false);
+                      jTextField2.setEnabled(false);
+                      jButton6.setEnabled(false);
+                       ClientManager cManager = new ClientManager(clientIp);
+                       cManager.startClient(player);
+                    }
     }//GEN-LAST:event_jButton6ActionPerformed
 
 
