@@ -5,12 +5,13 @@
  */
 package com.vertexforker.screens;
 
-import com.jme3.math.ColorRGBA;
 import com.vertexforker.connection.ClientManager;
 import com.vertexforker.connection.ConnectionUtil;
+import com.vertexforker.util.Token;
 import java.awt.Color;
-import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -159,15 +160,29 @@ public class JoinPanel extends javax.swing.JPanel {
                          jLabel1.setForeground(Color.GRAY);
                     }
                     if(valid){
+                      GameFrame gm = new GameFrame();
                       com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
                       player.setPlayerName(playerName);
+                      ClientManager cManager = new ClientManager(clientIp,gm);
+                      Token token = cManager.startClient(player);
+                     
+                      if(token.isSuccess()){
                       jLabel1.setText("Connecting");
                       jLabel1.setForeground(Color.GRAY);
                       jTextField1.setEnabled(false);
                       jTextField2.setEnabled(false);
                       jButton6.setEnabled(false);
-                       ClientManager cManager = new ClientManager(clientIp);
-                       cManager.startClient(player);
+                      JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                        topFrame.setVisible(false);
+                        topFrame.dispose();
+
+                        gm.setUpGameScreen(player);
+                        gm.setVisible(true);
+                      }else{
+                      
+                        jLabel1.setText("Error");
+                        jLabel1.setForeground(Color.RED);
+                      }
                     }
     }//GEN-LAST:event_jButton6ActionPerformed
 

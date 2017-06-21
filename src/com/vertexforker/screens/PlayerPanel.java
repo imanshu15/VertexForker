@@ -47,7 +47,7 @@ public class PlayerPanel extends javax.swing.JPanel {
        
        this.player = player;
        jLabel2.setText(this.player.getPlayerName());
-       jLabel4.setText(String.valueOf(this.player.getBet()));
+      // jLabel4.setText(String.valueOf(this.player.getBet()));
        jLabel3.setText(String.valueOf(this.player.getScore()));
        
    }

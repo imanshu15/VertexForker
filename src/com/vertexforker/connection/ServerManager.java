@@ -7,7 +7,8 @@ package com.vertexforker.connection;
 
 import com.jme3.network.Network;
 import com.jme3.network.Server;
-import com.vertexforker.manager.ServerDataManager;
+import com.vertexforker.entity.Player;
+import com.vertexforker.screens.GameFrame;
 import com.vertexforker.util.Token;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -20,15 +21,14 @@ import java.util.logging.Logger;
 public class ServerManager {
     
     private Server server;
-    private ServerDataManager dataManager;
     
     
-    public ServerManager(){
-        initDataManager();
+    public ServerManager(GameFrame game,Player player){
+    
         ConnectionUtil.initSerializers();
          try {
             server = Network.createServer(ConnectionUtil.SERVER_PORT);
-            server.addMessageListener(new ServerListener(server,dataManager));
+            server.addMessageListener(new ServerListener(server,game,player));
         } catch (IOException ex) {
             Logger.getLogger(ServerManager.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Server Initializing Error");
@@ -52,8 +52,6 @@ public class ServerManager {
          return token;
     }
 
-    private void initDataManager() {
-        dataManager = new ServerDataManager();
-    }
+   
     
 }

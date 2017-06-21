@@ -5,8 +5,10 @@
  */
 package com.vertexforker.manager;
 
+import com.jme3.scene.Node;
 import com.vertexforker.entity.Player;
-import java.util.HashMap;
+import java.util.ArrayList;
+import jme3tools.savegame.SaveGame;
 
 /**
  *
@@ -14,18 +16,27 @@ import java.util.HashMap;
  */
 public class ServerDataManager {
     
-    private HashMap<Integer,Player> entities = new HashMap<Integer,Player>();
+    private ArrayList players;
+    private Node gameData;
+    private int noOfPlayersDefined;
+    private int noOfPlayersConnected;
     
     public ServerDataManager(){
-    
+        gameData = (Node) SaveGame.loadGame("SaveGame/", "ForkerGameData");
+        noOfPlayersDefined = gameData.getUserData("noPlayers");
+        players = new ArrayList<Player>();
+        noOfPlayersConnected = 0;
     }
     
-    public void addOrRefreshUser(int id,Player player){
-        entities.put(id, player);
+    public void addPlayer(Player player){
+        
+        players.add(player);
+        noOfPlayersConnected ++;
+        
     }
     
-    public boolean isTherePlayerWithId(int id){
-        return entities.containsKey(id);
+    public ArrayList<Player> getPlayers(){
+        return this.players;
     }
     
 }

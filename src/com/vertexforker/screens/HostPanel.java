@@ -5,12 +5,14 @@
  */
 package com.vertexforker.screens;
 
+import com.jme3.scene.Node;
 import com.vertexforker.connection.ServerManager;
 import com.vertexforker.util.Token;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import jme3tools.savegame.SaveGame;
 
 /**
  *
@@ -179,7 +181,7 @@ public class HostPanel extends javax.swing.JPanel{
         
         String playerStr = jTextField1.getText();
         String noPlayersStr = jLabel3.getText();
-        int noPlayers;
+        int noPlayers = 0;
         
         if(playerStr.isEmpty()){
             jLabel2.setText("Player name cant be empty");
@@ -200,16 +202,25 @@ public class HostPanel extends javax.swing.JPanel{
         }
         
         if(valid){
-            ServerManager svrManager = new ServerManager();
+            
+            Node gameData = new Node("GameData");
+            gameData.setUserData("noPlayers", noPlayers);
+            gameData.setUserData("hostName", playerStr);
+            SaveGame.saveGame("SaveGame/", "ForkerGameData", gameData);
+            
+            com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
+            player.setPlayerName(playerStr);
+                 
+            GameFrame gm = new GameFrame();
+            ServerManager svrManager = new ServerManager(gm,player);
             Token token = svrManager.startServer();
 
             if(token.isSuccess()){
-                 com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
-                 player.setPlayerName(playerStr);
+                 
                  JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
                  topFrame.setVisible(false);
                  topFrame.dispose();
-                 GameFrame gm = new GameFrame();
+                 
                  gm.setUpGameScreen(player);
                  gm.setVisible(true);
                  jLabel2.setText("Server Started");

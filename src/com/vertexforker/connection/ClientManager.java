@@ -5,10 +5,13 @@
  */
 package com.vertexforker.connection;
 
+import com.google.gson.Gson;
 import com.jme3.network.Client;
 import com.jme3.network.ClientStateListener;
 import com.jme3.network.Network;
 import com.vertexforker.entity.Player;
+import com.vertexforker.screens.GameFrame;
+import com.vertexforker.util.Token;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,11 +23,11 @@ public class ClientManager implements ClientStateListener{
     
     private Client client;
     
-    public ClientManager(String serverIp){
+    public ClientManager(String serverIp,GameFrame gm){
         ConnectionUtil.initSerializers();
         try {
             client = Network.connectToServer(serverIp, ConnectionUtil.SERVER_PORT);
-            client.addMessageListener(new ClientListener(client));
+            client.addMessageListener(new ClientListener(client,gm));
             
         }catch(Exception ex) {  
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -32,21 +35,24 @@ public class ClientManager implements ClientStateListener{
         }
     }
     
-    public boolean startClient(Player player){
-       boolean value = true; 
+    public Token startClient(Player player){
+       Token token = new Token(); 
        try {
             client.start();   
             System.out.println("Client Connected");
             clientConnected(client);
-            client.send(new PlayerMessage(player));
+            
+            Gson gson = new Gson();
+            client.send(new PlayerMessage(gson.toJson(player)));
             
         }catch(Exception ex) {
             
             Logger.getLogger(ClientManager.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Connection Starting Error");
-            value = false;
+              token.setSuccess(false);
+            token.setError("Connection Starting Error" );
         }
-       return value;
+       return token;
     }
 
     @Override

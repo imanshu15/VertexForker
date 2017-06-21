@@ -5,6 +5,8 @@
  */
 package com.vertexforker.connection;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jme3.network.Filters;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
@@ -12,6 +14,7 @@ import com.jme3.network.MessageListener;
 import com.jme3.network.Server;
 import com.vertexforker.entity.Player;
 import com.vertexforker.manager.ServerDataManager;
+import com.vertexforker.screens.GameFrame;
 
 /**
  *
@@ -20,11 +23,15 @@ import com.vertexforker.manager.ServerDataManager;
 public class ServerListener implements MessageListener<HostedConnection>{
 
     private Server server;
-    private ServerDataManager dataManager;
+    private GameFrame gameFrame;
+    private ServerDataManager svrData;
+   
     
-    public ServerListener(Server server,ServerDataManager dataManager){
+    public ServerListener(Server server,GameFrame gameFrame,Player player){
         this.server =server;
-        this.dataManager = dataManager;
+        this.gameFrame = gameFrame;
+        svrData = new ServerDataManager();
+        svrData.addPlayer(player);
     }
     
     @Override
@@ -36,10 +43,15 @@ public class ServerListener implements MessageListener<HostedConnection>{
            server.broadcast(Filters.notEqualTo(source),new TextMessage(tm.getMessage()));
         }else
         if(m instanceof PlayerMessage){
+            
             PlayerMessage pm = (PlayerMessage) m;
-            Player player = pm.getPlayer();
-            server.broadcast(new PlayerMessage(player));
+            Gson gson=new GsonBuilder().create();
+            Player player =gson.fromJson( pm.getPlayer(),Player.class);
+            svrData.addPlayer(player);
+            server.broadcast(new PlayerMessage(gson.toJson(svrData.getPlayers())));
+            gameFrame.setUpGameScreen(player);
             System.out.println(player.getPlayerName() + " Connected");
+            
         }
         
     }

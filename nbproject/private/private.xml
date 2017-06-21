@@ -4,10 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/screens/GameFrame.java</file>
-            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/screens/MainFrame.java</file>
-            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/screens/PlayerPanel.java</file>
-            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/entity/Player.java</file>
-            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/screens/CardPanel.java</file>
+            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/connection/ClientListener.java</file>
+            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/connection/ConnectionUtil.java</file>
+            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/screens/ServerInfoPanel.java</file>
+            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/connection/ServerListener.java</file>
+            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/connection/ServerManager.java</file>
+            <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/connection/ClientManager.java</file>
             <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/screens/HostPanel.java</file>
             <file>file:/C:/Users/Imanshu/Documents/GitHub/VertexForker/src/com/vertexforker/screens/JoinPanel.java</file>
         </group>

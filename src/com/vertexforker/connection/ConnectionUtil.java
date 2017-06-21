@@ -20,6 +20,7 @@ public class ConnectionUtil {
     
     public static void initSerializers(){
         Serializer.registerClass(TextMessage.class );
+        Serializer.registerClass(PlayerMessage.class );
     }
    
     private static Pattern pattern;

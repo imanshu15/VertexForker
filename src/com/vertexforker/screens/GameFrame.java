@@ -7,8 +7,10 @@ package com.vertexforker.screens;
 
 
 
+import com.jme3.scene.Node;
+import com.jme3.system.JmeSystem;
 import com.vertexforker.entity.Player;
-import javax.swing.ImageIcon;
+import jme3tools.savegame.SaveGame;
 
 /**
  *
@@ -16,12 +18,15 @@ import javax.swing.ImageIcon;
  */
 public class GameFrame extends javax.swing.JFrame {
 
+    private Node gameData;
     /**
      * Creates new form GameFrame
      */
     public GameFrame() {
         initComponents();
-     
+        noOfPlayersConnected = 0;
+        gameData = (Node) SaveGame.loadGame("SaveGame/", "ForkerGameData");
+        noOfPlayersDefined = gameData.getUserData("noPlayers");
        
     }
 
@@ -41,6 +46,7 @@ public class GameFrame extends javax.swing.JFrame {
         userPanel3 = new javax.swing.JPanel();
         userPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 600));
@@ -74,6 +80,8 @@ public class GameFrame extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/vertexforker/png/Game frame.png"))); // NOI18N
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, 0, 900, 600);
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(290, 0, 240, 70);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -124,8 +132,9 @@ public class GameFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel1;
     private static javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private static javax.swing.JPanel userPanel;
     private static javax.swing.JPanel userPanel1;
     private static javax.swing.JPanel userPanel2;
@@ -133,42 +142,47 @@ public class GameFrame extends javax.swing.JFrame {
     private static javax.swing.JPanel userPanel4;
     // End of variables declaration//GEN-END:variables
 
+    private int noOfPlayersConnected;
+    private static int noOfPlayersDefined;
+    
     public void setUpGameScreen(Player player) {
-        
-          PlayerPanel user=new PlayerPanel(player);
-        userPanel.add(user);
+        PlayerPanel playerOne = null,playerTwo = null,playerThree = null,playerFour = null,playerFive = null;
+        if(noOfPlayersConnected < noOfPlayersDefined){
+            noOfPlayersConnected++;
+            if(noOfPlayersConnected == 1) {
+                playerOne = new PlayerPanel(player); userPanel.add(playerOne); 
+            }else
+            if(noOfPlayersConnected == 2){
+                playerTwo = new PlayerPanel(player); userPanel1.add(playerTwo);
+            }else
+            if(noOfPlayersConnected == 3){
+                playerThree = new PlayerPanel(player); userPanel2.add(playerThree);
+            }else
+            if(noOfPlayersConnected == 4){
+                playerFour = new PlayerPanel(player); userPanel3.add(playerFour);
+            }else
+            if(noOfPlayersConnected == 5) {
+                playerFive = new PlayerPanel(player); userPanel4.add(playerFive);
+            }
+        }
+          ServerInfoPanel ifPanel = new ServerInfoPanel(String.valueOf(noOfPlayersConnected));
+          jPanel2.add(ifPanel);
         /*
                 CardPanel card1 = new CardPanel("back.png",61,85,0);
                 CardPanel card2 = new CardPanel("back.png",61,85,0);
                 CardPanel card3 = new CardPanel("back.png",61,85,0);
                 CardPanel card4 = new CardPanel("back.png",61,85,0);
                 CardPanel card5 = new CardPanel("back.png",61,85,0);
-             
-                jPanel1.add(card1);
-                jPanel1.add(card2);
-                jPanel1.add(card3);
-                jPanel1.add(card4);
-                jPanel1.add(card5);
-                
-                
-                PlayerPanel user1=new PlayerPanel();
-                PlayerPanel user2=new PlayerPanel();
-                PlayerPanel user3=new PlayerPanel();
-                PlayerPanel user4=new PlayerPanel();
-                
+                        
                 user1.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user2.png"));
                 user2.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user3.png"));
                 user3.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user4.png"));
                 user4.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user5.png"));
-                
-                
-                
-                userPanel1.add(user1);
-                userPanel2.add(user2);
-                userPanel3.add(user3);
-                userPanel4.add(user4);
+
               
-                */
-             
+                */ 
     }
+    
+    
+    
 }
