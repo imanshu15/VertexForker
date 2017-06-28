@@ -11,6 +11,83 @@ package com.vertexforker.entity;
  */
 public class Player {
 
+    public enum Request{
+        CONNECT,
+        DISCONNECT
+    }
+    
+    private String sessionKey;
+    private Request requestType;
+    private String playerName;
+    private String ipAddress;
+    private int score;
+    private Card[] playerHand;
+    private int playerPosition;
+    private int definedNoOfPlayers;
+    private boolean gameStarted;
+
+    public Player() {
+        playerName = "";
+        score = 0;
+        playerHand = new Card[2];
+    }
+
+    /**
+     * @return the sessionKey
+     */
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    /**
+     * @param sessionKey the sessionKey to set
+     */
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+    }
+    
+    /**
+     * @return the requestType
+     */
+    public Request getRequestType() {
+        return requestType;
+    }
+
+    /**
+     * @param requestType the requestType to set
+     */
+    public void setRequestType(Request requestType) {
+        this.requestType = requestType;
+    }
+    
+    /**
+     * @return the playerName
+     */
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    /**
+     * @param playerName the playerName to set
+     */
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    /**
+     * @return the ipAddress
+     */
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    /**
+     * @param ipAddress the ipAddress to set
+     */
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     /**
      * @return the score
      */
@@ -23,20 +100,6 @@ public class Player {
      */
     public void setScore(int score) {
         this.score = score;
-    }
-
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
     }
 
     /**
@@ -53,35 +116,46 @@ public class Player {
         this.playerHand = playerHand;
     }
 
-
-    
-    private int id;
-    int requestType;
-    private String playerName;
-    private int score;
-    private Card[] playerHand;
-
-    
-    public Player(){
-        playerName = "";
-        score = 0;
-        playerHand = new Card[2];
-        requestType = 0;
-    }
-    
-        /**
-     * @return the playerName
+    /**
+     * @return the playerPosition
      */
-    public String getPlayerName() {
-        return playerName;
+    public int getPlayerPosition() {
+        return playerPosition;
     }
 
     /**
-     * @param playerName the playerName to set
+     * @param playerPosition the playerPosition to set
      */
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-        
+    public void setPlayerPosition(int playerPosition) {
+        this.playerPosition = playerPosition;
     }
-    
+
+    /**
+     * @return the definedNoOfPlayers
+     */
+    public int getDefinedNoOfPlayers() {
+        return definedNoOfPlayers;
+    }
+
+    /**
+     * @param definedNoOfPlayers the definedNoOfPlayers to set
+     */
+    public void setDefinedNoOfPlayers(int definedNoOfPlayers) {
+        this.definedNoOfPlayers = definedNoOfPlayers;
+    }
+
+    /**
+     * @return the gameStarted
+     */
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    /**
+     * @param gameStarted the gameStarted to set
+     */
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
 }

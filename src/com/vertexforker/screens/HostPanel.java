@@ -7,7 +7,8 @@ package com.vertexforker.screens;
 
 import com.jme3.scene.Node;
 import com.vertexforker.connection.ServerManager;
-import com.vertexforker.util.Token;
+import com.vertexforker.util.AuthenticationHelper;
+import com.vertexforker.meta.Token;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -210,6 +211,7 @@ public class HostPanel extends javax.swing.JPanel{
             
             com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
             player.setPlayerName(playerStr);
+            player.setIpAddress(AuthenticationHelper.getIpAddress());
                  
             GameFrame gm = new GameFrame();
             ServerManager svrManager = new ServerManager(gm,player);
@@ -221,7 +223,7 @@ public class HostPanel extends javax.swing.JPanel{
                  topFrame.setVisible(false);
                  topFrame.dispose();
                  
-                 gm.setUpGameScreen(player);
+                 gm.setUpGameScreen();
                  gm.setVisible(true);
                  jLabel2.setText("Server Started");
                  jLabel2.setForeground(Color.MAGENTA);

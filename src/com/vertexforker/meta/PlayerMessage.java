@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.vertexforker.connection;
+package com.vertexforker.meta;
 
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;

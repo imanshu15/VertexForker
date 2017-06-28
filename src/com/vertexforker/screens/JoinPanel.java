@@ -5,10 +5,16 @@
  */
 package com.vertexforker.screens;
 
+import com.vertexforker.connection.ClientListener;
 import com.vertexforker.connection.ClientManager;
 import com.vertexforker.connection.ConnectionUtil;
-import com.vertexforker.util.Token;
+import com.vertexforker.manager.PlayerSessionManager;
+import com.vertexforker.util.AuthenticationHelper;
+import com.vertexforker.meta.Token;
 import java.awt.Color;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -22,12 +28,12 @@ public class JoinPanel extends javax.swing.JPanel {
     /**
      * Creates new form JoinPanel
      */
-   
-
     JPanel contentPanel;
+
     public JoinPanel(JPanel Panel) {
         initComponents();
-        contentPanel=Panel;
+        contentPanel = Panel;
+        jTextField1.setText("127.0.0.1");
     }
 
     /**
@@ -49,12 +55,15 @@ public class JoinPanel extends javax.swing.JPanel {
         setMinimumSize(new java.awt.Dimension(300, 327));
         setOpaque(false);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Enter Server IP ");
 
         jTextField1.setBackground(new java.awt.Color(51, 51, 51));
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextField1.setForeground(new java.awt.Color(153, 153, 153));
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jButton5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/vertexforker/png/Back.png"))); // NOI18N
@@ -77,13 +86,14 @@ public class JoinPanel extends javax.swing.JPanel {
         });
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("User Name");
 
         jTextField2.setBackground(new java.awt.Color(51, 51, 51));
         jTextField2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jTextField2.setForeground(new java.awt.Color(153, 153, 153));
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setToolTipText("Name");
 
@@ -91,38 +101,37 @@ public class JoinPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 52, Short.MAX_VALUE))
+                            .addComponent(jButton5)
+                            .addComponent(jButton6)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(48, 48, 48)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(4, 4, 4)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -131,7 +140,7 @@ public class JoinPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-      MenuPanel mp=new MenuPanel(contentPanel);
+        MenuPanel mp = new MenuPanel(contentPanel);
         contentPanel.setVisible(false);
         contentPanel.remove(this);
         contentPanel.add(mp);
@@ -139,51 +148,69 @@ public class JoinPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-                    
-                     boolean valid = true;
-                    String clientIp = jTextField1.getText();
-                    String playerName = jTextField2.getText();
-                    
-                    if(playerName.isEmpty()){
-                        jLabel2.setText("Enter name");
-                        jLabel2.setForeground(Color.red);
-                        valid = false;
-                    }else{
-                        jLabel2.setText("Player Name");
-                        jLabel2.setForeground(Color.GRAY);
-                    }
-                    if(!ConnectionUtil.validate(clientIp)){
-                         jLabel1.setText("Invalid IP Address");
-                         jLabel1.setForeground(Color.red);
-                    }else{
-                         jLabel1.setText("Server IP Address");
-                         jLabel1.setForeground(Color.GRAY);
-                    }
-                    if(valid){
-                      GameFrame gm = new GameFrame();
-                      com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
-                      player.setPlayerName(playerName);
-                      ClientManager cManager = new ClientManager(clientIp,gm);
-                      Token token = cManager.startClient(player);
-                     
-                      if(token.isSuccess()){
-                      jLabel1.setText("Connecting");
-                      jLabel1.setForeground(Color.GRAY);
-                      jTextField1.setEnabled(false);
-                      jTextField2.setEnabled(false);
-                      jButton6.setEnabled(false);
-                      JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-                        topFrame.setVisible(false);
-                        topFrame.dispose();
 
-                        gm.setUpGameScreen(player);
-                        gm.setVisible(true);
-                      }else{
-                      
-                        jLabel1.setText("Error");
-                        jLabel1.setForeground(Color.RED);
-                      }
+        boolean valid = true;
+        String serverIp = jTextField1.getText();
+        String playerName = jTextField2.getText();
+
+        if (playerName.isEmpty()) {
+            jLabel2.setText("Enter name");
+            jLabel2.setForeground(Color.red);
+            valid = false;
+        } else {
+            jLabel2.setText("Player Name");
+            jLabel2.setForeground(Color.GRAY);
+        }
+        if (!ConnectionUtil.validate(serverIp)) {
+            jLabel1.setText("Invalid IP Address");
+            jLabel1.setForeground(Color.red);
+        } else {
+            jLabel1.setText("Server IP Address");
+            jLabel1.setForeground(Color.GRAY);
+        }
+        if (valid) {
+            GameFrame gm = new GameFrame();
+            com.vertexforker.entity.Player player = new com.vertexforker.entity.Player();
+            player.setPlayerName(playerName);
+            player.setIpAddress(AuthenticationHelper.getIpAddress());
+            ClientManager cManager = new ClientManager();
+            Token token = cManager.startClient(serverIp, gm, player);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JoinPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (token.isSuccess()) {
+                if (ClientListener.latestServerMessage == null) {
+                    jLabel1.setText("Connecting");
+                    jLabel1.setForeground(Color.GRAY);
+                    jTextField1.setEnabled(false);
+                    jTextField2.setEnabled(false);
+                    jButton6.setEnabled(false);
+                    JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                    topFrame.setVisible(false);
+                    topFrame.dispose();
+
+                    gm.setVisible(true);
+                } else {
+                    PlayerSessionManager.getInstance().replaceUserSessionMap(new ConcurrentHashMap<>());
+                    switch (ClientListener.latestServerMessage.getCode()) {
+                        case TABLE_IS_FULL:
+                            jLabel1.setText("Sorry! The table is full.");
+                            jLabel1.setForeground(Color.RED);
+                            break;
+                        case GAME_STARTED:
+                            jLabel1.setText("The game has already started.");
+                            jLabel1.setForeground(Color.RED);
+                            break;
                     }
+                }
+            } else {
+
+                jLabel1.setText("Error");
+                jLabel1.setForeground(Color.RED);
+            }
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
 

@@ -5,11 +5,22 @@
  */
 package com.vertexforker.screens;
 
-
-
 import com.jme3.scene.Node;
-import com.jme3.system.JmeSystem;
+import com.vertexforker.connection.ClientManager;
+import com.vertexforker.connection.ServerListener;
+import com.vertexforker.connection.ServerManager;
 import com.vertexforker.entity.Player;
+import com.vertexforker.manager.PlayerSessionManager;
+import com.vertexforker.meta.Token;
+import static com.vertexforker.screens.MainFrame.contentPanel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import jme3tools.savegame.SaveGame;
 
 /**
@@ -19,6 +30,7 @@ import jme3tools.savegame.SaveGame;
 public class GameFrame extends javax.swing.JFrame {
 
     private Node gameData;
+
     /**
      * Creates new form GameFrame
      */
@@ -27,7 +39,35 @@ public class GameFrame extends javax.swing.JFrame {
         noOfPlayersConnected = 0;
         gameData = (Node) SaveGame.loadGame("SaveGame/", "ForkerGameData");
         noOfPlayersDefined = gameData.getUserData("noPlayers");
-       
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new ConfirmExit());
+    }
+
+    private class ConfirmExit extends WindowAdapter {
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            int result = JOptionPane.showOptionDialog(
+                    GameFrame.this,
+                    "Are you sure you want to quit?",
+                    "Exit Dialog", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null, null,
+                    null);
+
+            if (result == JOptionPane.YES_OPTION) {
+                if (ServerListener.svrData != null) {
+                    ServerManager.endServer();
+                } else {
+                    ClientManager.endClient();
+                }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JoinPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.exit(0);
+            }
+        }
     }
 
     /**
@@ -118,17 +158,10 @@ public class GameFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 GameFrame gm = new GameFrame();
-          
-                
-                
-                
-              
-                
+
             }
         });
-        
-        
-       
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -144,45 +177,90 @@ public class GameFrame extends javax.swing.JFrame {
 
     private int noOfPlayersConnected;
     private static int noOfPlayersDefined;
-    
-    public void setUpGameScreen(Player player) {
-        PlayerPanel playerOne = null,playerTwo = null,playerThree = null,playerFour = null,playerFive = null;
-        if(noOfPlayersConnected < noOfPlayersDefined){
-            noOfPlayersConnected++;
-            if(noOfPlayersConnected == 1) {
-                playerOne = new PlayerPanel(player); userPanel.add(playerOne); 
-            }else
-            if(noOfPlayersConnected == 2){
-                playerTwo = new PlayerPanel(player); userPanel1.add(playerTwo);
-            }else
-            if(noOfPlayersConnected == 3){
-                playerThree = new PlayerPanel(player); userPanel2.add(playerThree);
-            }else
-            if(noOfPlayersConnected == 4){
-                playerFour = new PlayerPanel(player); userPanel3.add(playerFour);
-            }else
-            if(noOfPlayersConnected == 5) {
-                playerFive = new PlayerPanel(player); userPanel4.add(playerFive);
+
+    public void setUpGameScreen() {
+        clearAllPlayerPanels();
+        ConcurrentHashMap<String, Player> allPlayers = PlayerSessionManager.getInstance().getAllPlayers();
+        PlayerPanel player = null;
+        //Set local player
+        Player localPlayer = allPlayers.get(PlayerSessionManager.getInstance().getLocalPlayerKey());
+        player = new PlayerPanel(localPlayer);
+        userPanel.add(player);
+        userPanel.repaint();
+        int localPlayerPosition = localPlayer.getPlayerPosition();
+
+        noOfPlayersDefined = localPlayer.getDefinedNoOfPlayers();
+        jPanel1.removeAll();
+
+        for (Map.Entry<String, Player> entry : allPlayers.entrySet()) {
+            player = new PlayerPanel(entry.getValue());
+            if (entry.getKey().compareTo(PlayerSessionManager.getInstance().getLocalPlayerKey()) != 0) {
+                switch (entry.getValue().getPlayerPosition()) {
+                    case 0:
+                        setPlayers(localPlayerPosition, player);
+                    default:
+                        setPlayers(entry.getValue().getPlayerPosition(), player);
+                        break;
+                }
             }
         }
-          ServerInfoPanel ifPanel = new ServerInfoPanel(String.valueOf(noOfPlayersConnected));
-          jPanel2.add(ifPanel);
-        /*
-                CardPanel card1 = new CardPanel("back.png",61,85,0);
-                CardPanel card2 = new CardPanel("back.png",61,85,0);
-                CardPanel card3 = new CardPanel("back.png",61,85,0);
-                CardPanel card4 = new CardPanel("back.png",61,85,0);
-                CardPanel card5 = new CardPanel("back.png",61,85,0);
-                        
-                user1.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user2.png"));
-                user2.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user3.png"));
-                user3.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user4.png"));
-                user4.userImage.setIcon(new ImageIcon("src/com/vertexforker/png/user5.png"));
 
-              
-                */ 
+        if ((noOfPlayersDefined > allPlayers.size() && (!localPlayer.isGameStarted()))) {
+            ServerInfoPanel ifPanel = new ServerInfoPanel(String.valueOf((noOfPlayersDefined - allPlayers.size())));
+            jPanel1.add(ifPanel);
+        }
+        jPanel1.repaint();
     }
-    
-    
-    
+
+    private void setPlayers(int position, PlayerPanel player) {
+        switch (position) {
+            case 1:
+                userPanel1.add(player);
+                userPanel1.repaint();
+                break;
+            case 2:
+                userPanel2.add(player);
+                userPanel2.repaint();
+                break;
+            case 3:
+                userPanel3.add(player);
+                userPanel3.repaint();
+                break;
+            case 4:
+                userPanel4.add(player);
+                userPanel4.repaint();
+                break;
+        }
+    }
+
+    private void clearAllPlayerPanels() {
+        userPanel.removeAll();
+        userPanel1.removeAll();
+        userPanel2.removeAll();
+        userPanel3.removeAll();
+        userPanel4.removeAll();
+
+        userPanel.repaint();
+        userPanel1.repaint();
+        userPanel2.repaint();
+        userPanel3.repaint();
+        userPanel4.repaint();
+    }
+
+    public void autoExitGame() {
+        JOptionPane.showMessageDialog(GameFrame.this,
+                "Quitting...The Server has disconnectd.",
+                "Server Error",
+                JOptionPane.ERROR_MESSAGE);
+        PlayerSessionManager.getInstance().replaceUserSessionMap(null);
+        MainFrame f = new MainFrame();
+        MenuPanel mp = new MenuPanel(contentPanel);
+        contentPanel.add(mp);
+        f.validate();
+        f.repaint();
+        f.setVisible(true);
+        this.setVisible(false);
+        this.dispose();
+    }
+
 }

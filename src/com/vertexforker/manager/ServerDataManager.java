@@ -6,8 +6,6 @@
 package com.vertexforker.manager;
 
 import com.jme3.scene.Node;
-import com.vertexforker.entity.Player;
-import java.util.ArrayList;
 import jme3tools.savegame.SaveGame;
 
 /**
@@ -15,28 +13,35 @@ import jme3tools.savegame.SaveGame;
  * @author Imanshu
  */
 public class ServerDataManager {
-    
-    private ArrayList players;
+
     private Node gameData;
     private int noOfPlayersDefined;
-    private int noOfPlayersConnected;
-    
-    public ServerDataManager(){
+    private boolean gameStarted;
+
+    public ServerDataManager() {
         gameData = (Node) SaveGame.loadGame("SaveGame/", "ForkerGameData");
         noOfPlayersDefined = gameData.getUserData("noPlayers");
-        players = new ArrayList<Player>();
-        noOfPlayersConnected = 0;
     }
-    
-    public void addPlayer(Player player){
-        
-        players.add(player);
-        noOfPlayersConnected ++;
-        
+
+    /**
+     * @return the noOfPlayersDefined
+     */
+    public int getNoOfPlayersDefined() {
+        return noOfPlayersDefined;
     }
-    
-    public ArrayList<Player> getPlayers(){
-        return this.players;
+
+    /**
+     * @return the gameStarted
+     */
+    public boolean isGameStarted() {
+        return gameStarted;
     }
-    
+
+    /**
+     * @param gameStarted the gameStarted to set
+     */
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
 }

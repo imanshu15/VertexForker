@@ -5,7 +5,9 @@
  */
 package com.vertexforker.connection;
 
+import com.vertexforker.meta.PlayerMessage;
 import com.jme3.network.serializing.Serializer;
+import com.vertexforker.meta.Message;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +21,7 @@ public class ConnectionUtil {
     public static final int SERVER_PORT = 4444;
     
     public static void initSerializers(){
-        Serializer.registerClass(TextMessage.class );
+        Serializer.registerClass(Message.class );
         Serializer.registerClass(PlayerMessage.class );
     }
    
